@@ -1,0 +1,4 @@
+[submodule "app"]
+	path = app
+	url = https://github.com/IS-AgroSmart/AgroSmart-Web
+	branch = master
