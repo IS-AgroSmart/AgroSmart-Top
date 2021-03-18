@@ -15,6 +15,8 @@ This repository aims to simplify the deployment of the application, by including
 
    * Run  `python3 manage.py migrate`
 
+   * Run  `python3 manage.py collectstatic`
+
    * Run `python3 manage.py createsuperuser` and provide the required credentials (username `admin`, email and password shall be determined by use of rational thought)
 
 5. Set up the gradient style on Geoserver, to be used by the indices. To do so:
