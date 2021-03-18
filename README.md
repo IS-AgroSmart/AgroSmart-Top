@@ -17,15 +17,28 @@ This repository aims to simplify the deployment of the application, by including
 
    * Run `python3 manage.py createsuperuser` and provide the required credentials (username `admin`, email and password shall be determined by use of rational thought)
 
-5. (TODO) Any additional, one-time-only steps. To check:
+5. Set up the gradient style on Geoserver, to be used by the indices. To do so:
+ 
+   1. Visit `<ip>/geoserver/geoserver/web`, log in to Geoserver, click on "Styles" on the left bar.
+   2. Create a new style, which must be called exactly `gradient`. Leave the workspace blank and the format as SLD, as default.
+   3. Enter the contents of [gradient.xml](gradient.xml) in the text box.
+   4. Click the Save button at the bottom of the form.
 
-   * Set up the gradient style on Geoserver
+7. (TODO) Any additional, one-time-only steps. To check:
+
    * Somehow send the gradient image to the Geoserver volume???
 
 ## Not-first-time usage
 
 1. `cd ~/AgroSmart`
 2. `PREFIX=$(pwd) docker-compose up`
+
+## Updating the source code
+
+1. Stop the containers by attaching to their terminal session and pressing Ctrl+C.
+2. Make sure that you are in the `~/AgroSmart` directory (which you should be, if you are in the same terminal that was running the app).
+3. Run `git pull --recurse-submodules`.
+4. Run the server again with `PREFIX=$(pwd) docker-compose up`.
 
 ## // TODO
 
