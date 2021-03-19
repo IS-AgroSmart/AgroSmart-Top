@@ -118,6 +118,20 @@ services:
         expose:
           - 8080
         restart: always
+    grafana:
+        image: grafana/grafana
+        container_name: container-grafana
+        user: "472"
+        depends_on:
+          - prometheus
+        expose:
+          - 3000
+        volumes:
+          - grafana_data:/var/lib/grafana
+          - ./grafana/provisioning/:/etc/grafana/provisioning/
+        env_file:
+          - ./grafana/config.monitoring
+        restart: always
 #    duckdns:
 #        image: linuxserver/duckdns
 #        network_mode: host
@@ -152,3 +166,4 @@ services:
 volumes:
     geoserver_data:
     prometheus_data:
+    grafana_data:
