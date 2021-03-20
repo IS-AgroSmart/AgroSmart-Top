@@ -105,6 +105,7 @@ services:
         restart: always
         image: prom/node-exporter
     node-exporter:
+        image: prom/node-exporter
         container_name: container-node-exporter
         volumes:
           - /proc:/host/proc:ro
@@ -115,8 +116,8 @@ services:
           - '--path.sysfs=/host/sys'
           - --collector.filesystem.ignored-mount-points
           - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
-          - 9100
         expose:
+          - 9100
         restart: always
     cadvisor:
         container_name: container-cadvisor
@@ -143,6 +144,12 @@ services:
         env_file:
           - ./grafana/config.monitoring
         restart: always
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.grafana.rule=PathPrefix(`/grafana`)"
+            - "traefik.http.routers.grafana.entrypoints=web"
+            - "traefik.http.middlewares.grafana-remove-prefix.stripprefix.prefixes=/grafana"
+            - "traefik.http.routers.grafana.middlewares=grafana-remove-prefix@docker"
 volumes:
     geoserver_data:
     prometheus_data:
