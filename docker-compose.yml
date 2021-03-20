@@ -2,7 +2,7 @@ version: '3'
 services:
     traefik:
         image: "traefik:v2.4"
-        container_name: "traefik"
+        container_name: "container-traefik"
         command:
             #- "--log.level=DEBUG"
             - "--api.dashboard=true"
@@ -103,7 +103,6 @@ services:
         depends_on:
           - cadvisor
         restart: always
-        image: prom/node-exporter
     node-exporter:
         image: prom/node-exporter
         container_name: container-node-exporter
