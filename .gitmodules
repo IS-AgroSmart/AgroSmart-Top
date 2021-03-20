@@ -2,3 +2,6 @@
 	path = app
 	url = https://github.com/IS-AgroSmart/AgroSmart-Web
 	branch = master
+[submodule "webhook_adapter"]
+	path = webhook_adapter
+	url = https://github.com/IS-AgroSmart/webhook_adapter

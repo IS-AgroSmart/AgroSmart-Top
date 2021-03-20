@@ -24,3 +24,8 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
         - targets: ['container-node-exporter:9100']
+        
+  - job_name: 'traefik'
+    scrape_interval: 5s
+    static_configs:
+        - targets: ['container-traefik:80']      

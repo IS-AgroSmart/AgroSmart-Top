@@ -1,27 +1,37 @@
 version: '3'
 services:
-    nginx:
-        image: nginx
-        container_name: container-nginx
-        #network_mode: host
+    traefik:
+        image: "traefik:v2.4"
+        container_name: "container-traefik"
+        command:
+            #- "--log.level=DEBUG"
+            - "--api.dashboard=true"
+            - "--accesslog=true"
+            - "--metrics.prometheus=true"
+            - "--metrics.prometheus.manualrouting=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.traefik.entrypoints=web"
+            - "traefik.http.routers.traefik.rule=PathPrefix(`/traefik`) || HeadersRegexp(`Referer`, `/traefik/dashboard/`)"
+            - "traefik.http.routers.traefik.priority=100"
+            - "traefik.http.routers.traefik.middlewares=traefik"
+            - "traefik.http.routers.prometheus.rule=PathPrefix(`/metrics`)"
+            - "traefik.http.routers.prometheus.service=prometheus@internal"
+            - "traefik.http.middlewares.traefik.chain.middlewares=traefik-strip-prefix"
+            # - "traefik.http.middlewares.traefik-digest-auth.digestauth.usersfile=/run/secrets/auth_digest"
+            - "traefik.http.middlewares.traefik-strip-prefix.stripprefix.prefixes=/traefik"
+            - "traefik.http.routers.traefik.service=api@internal"
+            - "traefik.http.services.traefik.loadbalancer.server.port=8080"
         ports:
             - "80:80"
-        volumes: 
-            - ${PREFIX}/nginx:/etc/nginx
-            - ${PREFIX}/nginx/nginx.conf:/etc/nginx/nginx.conf
-            - ${PREFIX}/app/staticfiles:/static
-        depends_on: 
-            - django
-            - nodeodm
-            - geoserver
-            - vue
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
     geoserver:
         image: mxabierto/boundless-suite:efeabbd1a9afe9080acb5176c66ac4ec06408bb0
-        #image: kartoza/geoserver
         container_name: container-geoserver
-        #network_mode: host
-        ports:
-            - "8080:8080"
         volumes: 
             - ${PREFIX}/flights:/media/input
             - ${PREFIX}/projects:/media/USB
@@ -29,49 +39,62 @@ services:
         environment:
             - GEOSERVER_DATA_DIR=/opt/geoserver/data_dir
             - JAVA_OPTS=-Xms320m -Xmx750m -XX:SoftRefLRUPolicyMSPerMB=36000 -XX:-UsePerfData -Dorg.geotools.referencing.forceXY=true -Dorg.geotoools.render.lite.scale.unitCompensation=true -Xbootclasspath/a:/usr/local/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -Djava.library.path=/usr/lib:/usr/lib/jni:/opt/libjpeg-turbo/lib64:/usr/lib64 -Xbootclasspath/a:/opt/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -server -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.geoserver.rule=PathPrefix(`/geoserver`)"
+            - "traefik.http.routers.geoserver.entrypoints=web"
+            - "traefik.http.middlewares.geoserver-remove-prefix.stripprefix.prefixes=/geoserver"
+            - "traefik.http.routers.geoserver.middlewares=geoserver-remove-prefix@docker"
     nodeodm:
         image: opendronemap/nodeodm
         container_name: container-nodeodm
-        #network_mode: host
-        ports:
-            - "3000:3000"
         volumes:
             - ${PREFIX}/flights:/var/www/data
         command: --log_level=silly --cleanup_tasks_after=525960000000 --parallel_queue_processing=10
-    mysql:
-        image: mysql
-        container_name: container-mysql
-        #network_mode: host
-        volumes: 
-            - ${PREFIX}/mysql:/var/lib/mysql
-        command: --default-authentication-plugin=mysql_native_password
-        environment:
-            MYSQL_ROOT_PASSWORD: example
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nodeodm.rule=PathPrefix(`/nodeodm`)"
+            - "traefik.http.routers.nodeodm.entrypoints=web"
+            - "traefik.http.middlewares.nodeodm-remove-prefix.stripprefix.prefixes=/nodeodm"
+            - "traefik.http.routers.nodeodm.middlewares=nodeodm-remove-prefix@docker"
     vue:
         build: 
             context: ${PREFIX}/app/frontend
             dockerfile: Dockerfile
         container_name: container-vue
-        #network_mode: host
-        ports:
-            - "8001:8001"
         volumes:
             - ${PREFIX}/app/frontend:/app
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.vue.rule=PathPrefix(`/`)"
+            - "traefik.http.routers.vue.entrypoints=web"
+            - "traefik.http.services.vue-app.loadbalancer.server.port=8001"
     django:
         build:
             context: ${PREFIX}/app
             dockerfile: Dockerfile
         container_name: container-django
-        #network_mode: host
-        ports:
-            - "8000:8000"
-
         volumes:
             - ${PREFIX}/app:/app
             - ${PREFIX}/flights:/flights
             - ${PREFIX}/projects:/projects
-        depends_on:
-            - mysql
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.django.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/mapper`) || PathPrefix(`/lib`) || PathPrefix(`/src`)"
+            - "traefik.http.routers.django.priority=99"
+            - "traefik.http.routers.django.entrypoints=web"
+            
+    webhook_adapter:
+        build:
+            context: ${PREFIX}/webhook_adapter
+            dockerfile: Dockerfile
+        container_name: container-webhook-adapter
+        volumes:
+            - ${PREFIX}/webhook_adapter/pending:/app/pending
+        environment:
+            - "REMOTE_URL=http://container-nodeodm:3000/task/%s/info"
+            - "WEBHOOK_URL=http://container-django:8000/api/webhook-processing-complete"
+            - "POLL_INTERVAL=15"
     prometheus:
         image: prom/prometheus:v2.1.0
         container_name: container-prometheus
@@ -108,8 +131,8 @@ services:
           - 9100
         restart: always
     cadvisor:
-        image: google/cadvisor
         container_name: container-cadvisor
+        image: google/cadvisor
         volumes:
           - /:/rootfs:ro
           - /var/run:/var/run:rw
@@ -132,37 +155,12 @@ services:
         env_file:
           - ./grafana/config.monitoring
         restart: always
-#    duckdns:
-#        image: linuxserver/duckdns
-#        network_mode: host
-#        container_name: duckdns
-#        environment:
-#          - TZ=America/Guayaquil
-#          - SUBDOMAINS=droneapp
-#          - TOKEN=${DUCKDNSTOKEN}
-#        restart: unless-stopped
-#    letsencrypt:
-#        image: linuxserver/letsencrypt
-#        container_name: letsencrypt
-#        network_mode: host
-#        cap_add:
-#          - NET_ADMIN
-#        environment:
-#          - PUID=1000
-#          - PGID=1000
-#          - TZ=America/Guayaquil
-#          - URL=droneapp.duckdns.org
-#          - VALIDATION=duckdns
-#          - DUCKDNSTOKEN=${DUCKDNSTOKEN}
-#          - EMAIL=${LETSENCRYPT_EMAIL}
-#          - DHLEVEL=2048 #optional
-#          - ONLY_SUBDOMAINS=false #optional
-#        volumes:
-#          - ${PREFIX}/letsencrypt:/config
-#        ports:
-#          - 443:443
-#          - 80:80 #optional
-#        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.grafana.rule=PathPrefix(`/grafana`)"
+            - "traefik.http.routers.grafana.entrypoints=web"
+            - "traefik.http.middlewares.grafana-remove-prefix.stripprefix.prefixes=/grafana"
+            - "traefik.http.routers.grafana.middlewares=grafana-remove-prefix@docker"
 volumes:
     geoserver_data:
     prometheus_data:
