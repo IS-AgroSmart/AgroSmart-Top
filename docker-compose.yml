@@ -83,6 +83,18 @@ services:
             - "traefik.http.routers.django.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/mapper`) || PathPrefix(`/lib`) || PathPrefix(`/src`)"
             - "traefik.http.routers.django.priority=99"
             - "traefik.http.routers.django.entrypoints=web"
+            
+    webhook_adapter:
+        build:
+            context: ${PREFIX}/webhook_adapter
+            dockerfile: Dockerfile
+        container_name: container-webhook-adapter
+        volumes:
+            - ${PREFIX}/webhook_adapter/pending:/app/pending
+        environment:
+            - "REMOTE_URL=http://container-nodeodm:3000/task/%s/info"
+            - "WEBHOOK_URL=http://container-django:8000/api/webhook-processing-complete"
+            - "POLL_INTERVAL=15"
     prometheus:
         image: prom/prometheus:v2.1.0
         container_name: container-prometheus
