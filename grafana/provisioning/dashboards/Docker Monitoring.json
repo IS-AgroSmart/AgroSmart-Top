@@ -16,24 +16,9 @@
   "editable": true,
   "gnetId": 179,
   "graphTooltip": 1,
-  "id": 8,
-  "iteration": 1616194099254,
+  "iteration": 1616285929360,
   "links": [],
   "panels": [
-    {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 17,
-      "panels": [],
-      "title": "Host Info",
-      "type": "row"
-    },
     {
       "cacheTimeout": null,
       "colorBackground": false,
@@ -62,95 +47,9 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 1
+        "y": 0
       },
       "id": 15,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
-      },
-      "tableColumn": "{instance=\"localhost:9090\", job=\"prometheus\"}",
-      "targets": [
-        {
-          "expr": "time() - process_start_time_seconds{job=\"prometheus\"}",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "refId": "A"
-        }
-      ],
-      "thresholds": "",
-      "title": "Uptime",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
-    },
-    {
-      "cacheTimeout": null,
-      "colorBackground": true,
-      "colorValue": false,
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 5,
-        "x": 6,
-        "y": 1
-      },
-      "id": 13,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -187,21 +86,21 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(ALERTS)",
+          "expr": "time() - process_start_time_seconds{job=\"prometheus\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
         }
       ],
-      "thresholds": "0,1",
-      "title": "Alerts",
+      "thresholds": "",
+      "title": "Uptime",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
         {
           "op": "=",
           "text": "N/A",
-          "value": "0"
+          "value": "null"
         }
       ],
       "valueName": "avg"
@@ -232,9 +131,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 4,
-        "x": 11,
-        "y": 1
+        "w": 6,
+        "x": 6,
+        "y": 0
       },
       "id": 11,
       "interval": null,
@@ -318,9 +217,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 4,
-        "x": 15,
-        "y": 1
+        "w": 7,
+        "x": 12,
+        "y": 0
       },
       "id": 31,
       "interval": null,
@@ -379,6 +278,113 @@
       "valueName": "avg"
     },
     {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 17,
+      "panels": [],
+      "title": "Host Info",
+      "type": "row"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "rgba(50, 172, 45, 0.97)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(245, 54, 54, 0.9)"
+      ],
+      "datasource": "Prometheus",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "format": "percent",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": true,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 8
+      },
+      "id": 6,
+      "interval": null,
+      "isNew": true,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(sum by (container_name)( rate(container_cpu_usage_seconds_total[1m] ) )) / count(node_cpu_seconds_total{mode=\"system\"}) * 100",
+          "format": "time_series",
+          "interval": "1m",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "thresholds": "65, 90",
+      "title": "CPU usage",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
@@ -407,7 +413,7 @@
       "gridPos": {
         "h": 6,
         "w": 6,
-        "x": 0,
+        "x": 6,
         "y": 8
       },
       "id": 4,
@@ -498,99 +504,6 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
-        "x": 6,
-        "y": 8
-      },
-      "id": 6,
-      "interval": null,
-      "isNew": true,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
-      },
-      "tableColumn": "",
-      "targets": [
-        {
-          "expr": "sum(sum by (container_name)( rate(container_cpu_usage_seconds_total[1m] ) )) / count(node_cpu_seconds_total{mode=\"system\"}) * 100",
-          "format": "time_series",
-          "interval": "1m",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "A",
-          "step": 10
-        }
-      ],
-      "thresholds": "65, 90",
-      "title": "CPU usage",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "current"
-    },
-    {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(50, 172, 45, 0.97)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(245, 54, 54, 0.9)"
-      ],
-      "datasource": "Prometheus",
-      "decimals": 2,
-      "editable": true,
-      "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "format": "percent",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": true,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 6,
         "w": 7,
         "x": 12,
         "y": 8
@@ -633,7 +546,9 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum (container_fs_limit_bytes - container_fs_usage_bytes) / sum(container_fs_limit_bytes)",
+          "expr": "100-(sum(node_filesystem_avail_bytes)/sum(node_filesystem_size_bytes)*100)",
+          "format": "table",
+          "instant": true,
           "interval": "10s",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -698,7 +613,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -807,7 +722,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -837,7 +752,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Node Mermory",
+      "title": "Node Memory",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -853,14 +768,16 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2507",
           "format": "decbytes",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
+          "$$hashKey": "object:2508",
           "format": "s",
           "label": null,
           "logBase": 1,
@@ -919,7 +836,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -957,15 +874,17 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:2609",
           "decimals": null,
           "format": "decbytes",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": true
         },
         {
+          "$$hashKey": "object:2610",
           "format": "s",
           "label": null,
           "logBase": 1,
@@ -1042,7 +961,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1152,7 +1071,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1225,14 +1144,14 @@
       },
       "fontSize": "100%",
       "gridPos": {
-        "h": 13,
-        "w": 10,
+        "h": 10,
+        "w": 7,
         "x": 12,
         "y": 24
       },
-      "id": 23,
+      "id": 30,
       "links": [],
-      "pageSize": null,
+      "pageSize": 10,
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -1244,6 +1163,8 @@
           "alias": "Time",
           "align": "auto",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "link": false,
+          "linkUrl": "",
           "pattern": "Time",
           "type": "date"
         },
@@ -1265,13 +1186,32 @@
       ],
       "targets": [
         {
-          "expr": "ALERTS",
+          "expr": "cadvisor_version_info",
           "format": "table",
-          "intervalFactor": 1,
+          "instant": false,
+          "interval": "15m",
+          "intervalFactor": 2,
+          "legendFormat": "cAdvisor  Version: {{cadvisorVersion}}",
           "refId": "A"
+        },
+        {
+          "expr": "prometheus_build_info",
+          "format": "table",
+          "interval": "15m",
+          "intervalFactor": 2,
+          "legendFormat": "Prometheus Version: {{version}}",
+          "refId": "B"
+        },
+        {
+          "expr": "node_exporter_build_info",
+          "format": "table",
+          "interval": "15m",
+          "intervalFactor": 2,
+          "legendFormat": "Node-Exporter Version: {{version}}",
+          "refId": "C"
         }
       ],
-      "title": "Alerts",
+      "title": "Running Versions",
       "transform": "table",
       "type": "table-old"
     },
@@ -1295,7 +1235,7 @@
       "grid": {},
       "gridPos": {
         "h": 14,
-        "w": 6,
+        "w": 9,
         "x": 0,
         "y": 34
       },
@@ -1323,7 +1263,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1404,8 +1344,8 @@
       "grid": {},
       "gridPos": {
         "h": 14,
-        "w": 6,
-        "x": 6,
+        "w": 10,
+        "x": 9,
         "y": 34
       },
       "hiddenSeries": false,
@@ -1432,7 +1372,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.3",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1492,92 +1432,10 @@
         "align": false,
         "alignLevel": null
       }
-    },
-    {
-      "columns": [],
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fontSize": "100%",
-      "gridPos": {
-        "h": 10,
-        "w": 10,
-        "x": 12,
-        "y": 37
-      },
-      "id": 30,
-      "links": [],
-      "pageSize": 10,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
-      },
-      "styles": [
-        {
-          "alias": "Time",
-          "align": "auto",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "link": false,
-          "linkUrl": "",
-          "pattern": "Time",
-          "type": "date"
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
-      "targets": [
-        {
-          "expr": "cadvisor_version_info",
-          "format": "table",
-          "instant": false,
-          "interval": "15m",
-          "intervalFactor": 2,
-          "legendFormat": "cAdvisor  Version: {{cadvisorVersion}}",
-          "refId": "A"
-        },
-        {
-          "expr": "prometheus_build_info",
-          "format": "table",
-          "interval": "15m",
-          "intervalFactor": 2,
-          "legendFormat": "Prometheus Version: {{version}}",
-          "refId": "B"
-        },
-        {
-          "expr": "node_exporter_build_info",
-          "format": "table",
-          "interval": "15m",
-          "intervalFactor": 2,
-          "legendFormat": "Node-Exporter Version: {{version}}",
-          "refId": "C"
-        }
-      ],
-      "title": "Running Versions",
-      "transform": "table",
-      "type": "table-old"
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "docker",
@@ -1596,6 +1454,7 @@
           "text": "1m",
           "value": "1m"
         },
+        "description": null,
         "error": null,
         "hide": 0,
         "label": "interval",
@@ -1691,5 +1550,5 @@
   "timezone": "browser",
   "title": "Docker and Host Monitoring w/ Prometheus",
   "uid": "64nrElFmk",
-  "version": 2
+  "version": 1
 }
