@@ -45,18 +45,7 @@ services:
             - "traefik.http.routers.geoserver.entrypoints=web"
             - "traefik.http.middlewares.geoserver-remove-prefix.stripprefix.prefixes=/geoserver"
             - "traefik.http.routers.geoserver.middlewares=geoserver-remove-prefix@docker"
-    nodeodm:
-        image: opendronemap/nodeodm
-        container_name: container-nodeodm
-        volumes:
-            - ${PREFIX}/flights:/var/www/data
-        command: --log_level=silly --cleanup_tasks_after=525960000000 --parallel_queue_processing=10
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.nodeodm.rule=PathPrefix(`/nodeodm`)"
-            - "traefik.http.routers.nodeodm.entrypoints=web"
-            - "traefik.http.middlewares.nodeodm-remove-prefix.stripprefix.prefixes=/nodeodm"
-            - "traefik.http.routers.nodeodm.middlewares=nodeodm-remove-prefix@docker"
+    
     vue:
         build: 
             context: ${PREFIX}/app/frontend
@@ -80,10 +69,21 @@ services:
             - ${PREFIX}/projects:/projects
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.django.rule=PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/mapper`) || PathPrefix(`/lib`) || PathPrefix(`/src`)"
+            - "traefik.http.routers.django.rule=PathPrefix(`/api`) || PathPrefix(`/nodeodm`) || PathPrefix(`/admin`) || PathPrefix(`/mapper`) || PathPrefix(`/lib`) || PathPrefix(`/src`)"
             - "traefik.http.routers.django.priority=99"
             - "traefik.http.routers.django.entrypoints=web"
-            
+    nodeodm:
+        image: opendronemap/nodeodm
+        container_name: container-nodeodm
+        volumes:
+            - ${PREFIX}/flights:/var/www/data
+        command: --log_level=silly --cleanup_tasks_after=525960000000 --parallel_queue_processing=10
+        labels:
+            - "traefik.enable=false"
+            - "traefik.http.routers.nodeodm.rule=PathPrefix(`/nodeodm`)"
+            - "traefik.http.routers.nodeodm.entrypoints=web"
+            - "traefik.http.middlewares.nodeodm-remove-prefix.stripprefix.prefixes=/nodeodm"
+            - "traefik.http.routers.nodeodm.middlewares=nodeodm-remove-prefix@docker"        
     webhook_adapter:
         build:
             context: ${PREFIX}/webhook_adapter
@@ -92,7 +92,7 @@ services:
         volumes:
             - ${PREFIX}/webhook_adapter/pending:/app/pending
         environment:
-            - "REMOTE_URL=http://container-nodeodm:3000/task/%s/info"
+            - "REMOTE_URL=http://container-django:8000/nodeodm/task/%s/info"
             - "WEBHOOK_URL=http://container-django:8000/api/webhook-processing-complete"
             - "POLL_INTERVAL=15"
     prometheus:
