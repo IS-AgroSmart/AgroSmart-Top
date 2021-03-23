@@ -20,15 +20,12 @@ This repository aims to simplify the deployment of the application, by including
    * Run `python3 manage.py createsuperuser` and provide the required credentials (username `admin`, email and password shall be determined by use of rational thought)
 
 5. Set up the gradient style on Geoserver, to be used by the indices. To do so:
- 
+
    1. Visit `<ip>/geoserver/geoserver/web`, log in to Geoserver, click on "Styles" on the left bar.
    2. Create a new style, which must be called exactly `gradient`. Leave the workspace blank and the format as SLD, as default.
    3. Enter the contents of [gradient.xml](gradient.xml) in the text box.
    4. Click the Save button at the bottom of the form.
-
-7. (TODO) Any additional, one-time-only steps. To check:
-
-   * Somehow send the gradient image to the Geoserver volume???
+6. Upload the gradient legend to the Geoserver container: run `docker cp gradient.png container-geoserver:/opt/geoserver/data_dir/styles/gradient.png`
 
 ## Not-first-time usage
 
