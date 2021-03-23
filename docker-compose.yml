@@ -4,7 +4,7 @@ services:
         image: "traefik:v2.4"
         container_name: "container-traefik"
         command:
-            #- "--log.level=DEBUG"
+            # - "--log.level=DEBUG"
             - "--api.dashboard=true"
             - "--accesslog=true"
             - "--metrics.prometheus=true"
@@ -12,13 +12,23 @@ services:
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
             - "--entrypoints.web.address=:80"
+            - "--entrypoints.websecure.address=:443"
+            - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+            - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+            - "--entrypoints.websecure.http.tls.certResolver=leresolver"
+            - "--certificatesresolvers.leresolver.acme.httpchallenge=true"
+            - "--certificatesresolvers.leresolver.acme.httpchallenge.entrypoint=web"
+            - "--certificatesresolvers.leresolver.acme.email=appdrone1996@gmail.com"
+            - "--certificatesresolvers.leresolver.acme.storage=/letsencrypt/acme.json"
+            # - "--certificatesresolvers.leresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory" # uncomment to use statging (fake) certificates
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.traefik.entrypoints=web"
-            - "traefik.http.routers.traefik.rule=PathPrefix(`/traefik`) || HeadersRegexp(`Referer`, `/traefik/dashboard/`)"
+            - "traefik.http.routers.traefik.entrypoints=websecure"
+            - "traefik.http.routers.traefik.rule=Host(`flysensorec.com`) && (PathPrefix(`/traefik`) || HeadersRegexp(`Referer`, `/traefik/dashboard/`))"
             - "traefik.http.routers.traefik.priority=100"
             - "traefik.http.routers.traefik.middlewares=traefik"
-            - "traefik.http.routers.prometheus.rule=PathPrefix(`/metrics`)"
+            - "traefik.http.routers.prometheus.entrypoints=websecure"
+            - "traefik.http.routers.prometheus.rule=Host(`flysensorec.com`) && PathPrefix(`/metrics`)"
             - "traefik.http.routers.prometheus.service=prometheus@internal"
             - "traefik.http.middlewares.traefik.chain.middlewares=traefik-strip-prefix"
             # - "traefik.http.middlewares.traefik-digest-auth.digestauth.usersfile=/run/secrets/auth_digest"
@@ -27,8 +37,10 @@ services:
             - "traefik.http.services.traefik.loadbalancer.server.port=8080"
         ports:
             - "80:80"
+            - "443:443"
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - "./letsencrypt:/letsencrypt"
     geoserver:
         image: mxabierto/boundless-suite:efeabbd1a9afe9080acb5176c66ac4ec06408bb0
         container_name: container-geoserver
@@ -41,8 +53,8 @@ services:
             - JAVA_OPTS=-Xms320m -Xmx750m -XX:SoftRefLRUPolicyMSPerMB=36000 -XX:-UsePerfData -Dorg.geotools.referencing.forceXY=true -Dorg.geotoools.render.lite.scale.unitCompensation=true -Xbootclasspath/a:/usr/local/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -Djava.library.path=/usr/lib:/usr/lib/jni:/opt/libjpeg-turbo/lib64:/usr/lib64 -Xbootclasspath/a:/opt/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -server -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.geoserver.rule=PathPrefix(`/geoserver`)"
-            - "traefik.http.routers.geoserver.entrypoints=web"
+            - "traefik.http.routers.geoserver.rule=Host(`flysensorec.com`) && PathPrefix(`/geoserver`)"
+            - "traefik.http.routers.geoserver.entrypoints=websecure"
             - "traefik.http.middlewares.geoserver-remove-prefix.stripprefix.prefixes=/geoserver"
             - "traefik.http.routers.geoserver.middlewares=geoserver-remove-prefix@docker"
     
@@ -55,8 +67,8 @@ services:
             - ${PREFIX}/app/frontend:/app
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.vue.rule=PathPrefix(`/`)"
-            - "traefik.http.routers.vue.entrypoints=web"
+            - "traefik.http.routers.vue.rule=Host(`flysensorec.com`) && PathPrefix(`/`)"
+            - "traefik.http.routers.vue.entrypoints=websecure"
             - "traefik.http.services.vue-app.loadbalancer.server.port=8001"
     django:
         build:
@@ -69,9 +81,9 @@ services:
             - ${PREFIX}/projects:/projects
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.django.rule=PathPrefix(`/api`) || PathPrefix(`/nodeodm`) || PathPrefix(`/admin`) || PathPrefix(`/mapper`) || PathPrefix(`/lib`) || PathPrefix(`/src`)"
+            - "traefik.http.routers.django.rule=Host(`flysensorec.com`) && (PathPrefix(`/api`) || PathPrefix(`/nodeodm`) || PathPrefix(`/admin`) || PathPrefix(`/mapper`) || PathPrefix(`/lib`) || PathPrefix(`/src`))"
             - "traefik.http.routers.django.priority=99"
-            - "traefik.http.routers.django.entrypoints=web"
+            - "traefik.http.routers.django.entrypoints=websecure"
     nodeodm:
         image: opendronemap/nodeodm
         container_name: container-nodeodm
@@ -80,8 +92,8 @@ services:
         command: --log_level=silly --cleanup_tasks_after=525960000000 --parallel_queue_processing=10
         labels:
             - "traefik.enable=false"
-            - "traefik.http.routers.nodeodm.rule=PathPrefix(`/nodeodm`)"
-            - "traefik.http.routers.nodeodm.entrypoints=web"
+            - "traefik.http.routers.nodeodm.rule=Host(`flysensorec.com`) && PathPrefix(`/nodeodm`)"
+            - "traefik.http.routers.nodeodm.entrypoints=websecure"
             - "traefik.http.middlewares.nodeodm-remove-prefix.stripprefix.prefixes=/nodeodm"
             - "traefik.http.routers.nodeodm.middlewares=nodeodm-remove-prefix@docker"        
     webhook_adapter:
@@ -157,8 +169,8 @@ services:
         restart: always
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.grafana.rule=PathPrefix(`/grafana`)"
-            - "traefik.http.routers.grafana.entrypoints=web"
+            - "traefik.http.routers.grafana.rule=Host(`flysensorec.com`) && PathPrefix(`/grafana`)"
+            - "traefik.http.routers.grafana.entrypoints=websecure"
             - "traefik.http.middlewares.grafana-remove-prefix.stripprefix.prefixes=/grafana"
             - "traefik.http.routers.grafana.middlewares=grafana-remove-prefix@docker"
 volumes:
