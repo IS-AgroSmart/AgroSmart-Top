@@ -3,14 +3,16 @@ The top-level repository for the AgroSmart/DroneApp web application.
 
 This repository aims to simplify the deployment of the application, by including some top-level files which must be included one level above the source code which is on [IS-AgroSmart](https://github.com/IS-AgroSmart)/[AgroSmart-Web](https://github.com/IS-AgroSmart/AgroSmart-Web).
 
+## Pre-install steps
+1. Update the OS.
+2. Install Git, Docker, Docker Compose and NPM.
+
 ## First-time usage
 
 1. Clone this repo with `git clone --recurse-submodules https://github.com/IS-AgroSmart/AgroSmart-Top ~/AgroSmart`.
-
+1. Install all NPM dependencies on the `app/frontend` directory: run `cd ~/AgroSmart/app/frontend; npm install`.
 2. Create the file `AgroSmart/app/IngSoft1/settings.ini` file and fill it with the required secrets. Only The Chosen Ones ~~should~~ will have access to the file.
-
-3. To run the app, `cd` into the directory, and run `PREFIX=$(pwd) docker-compose up`. Repeat any time the app must be started.
-
+3. To run the app, `cd` into the `~/AgroSmart` directory, and run `PREFIX=$(pwd) docker-compose up`. Repeat any time the app must be started.
 4. Create a starting admin user: run `docker exec -it container-django /bin/sh`. On the container console:
 
    * Run  `python3 manage.py migrate`
