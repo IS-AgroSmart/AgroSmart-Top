@@ -110,8 +110,6 @@ services:
           - '--web.console.templates=/usr/share/prometheus/consoles'
           - '--web.route-prefix=/'
           - '--web.external-url=http://flysensorec.com/prometheus'
-        ports:
-          - "9090:9090"
         links:
           - cadvisor:cadvisor
         depends_on:
