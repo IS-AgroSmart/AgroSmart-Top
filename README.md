@@ -10,10 +10,11 @@ This repository aims to simplify the deployment of the application, by including
 ## First-time usage
 
 1. Clone this repo with `git clone --recurse-submodules https://github.com/IS-AgroSmart/AgroSmart-Top ~/AgroSmart`.
-1. Install all NPM dependencies on the `app/frontend` directory: run `cd ~/AgroSmart/app/frontend; npm install`.
-2. Create the file `AgroSmart/app/IngSoft1/settings.ini` file and fill it with the required secrets. Only The Chosen Ones ~~should~~ will have access to the file.
-3. To run the app, `cd` into the `~/AgroSmart` directory, and run `PREFIX=$(pwd) docker-compose up`. Repeat any time the app must be started.
-4. Create a starting admin user: run `docker exec -it container-django /bin/sh`. On the container console:
+2. Change to the `deploy` branch: `cd ~/AgroSmart; git checkout deploy`.
+3. Install all NPM dependencies on the `app/frontend` directory: run `cd ~/AgroSmart/app/frontend; npm install`.
+4. Create the file `AgroSmart/app/IngSoft1/settings.ini` file and fill it with the required secrets. Only The Chosen Ones ~~should~~ will have access to the file.
+5. To run the app, `cd` into the `~/AgroSmart` directory, and run `PREFIX=$(pwd) docker-compose up`. Repeat any time the app must be started.
+6. Create a starting admin user: run `docker exec -it container-django /bin/sh`. On the container console:
 
    * Run  `python3 manage.py migrate`
 
