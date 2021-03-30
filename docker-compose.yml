@@ -41,6 +41,18 @@ services:
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
             - "./letsencrypt:/letsencrypt"
+    static_files:
+        image: nginx
+        volumes:
+            - ./app/staticfiles:/usr/share/nginx/html:ro
+        container_name: container-static-files
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.static-files.rule=PathPrefix(`/static`)"
+            - "traefik.http.services.static-files.loadbalancer.server.port=80"
+            - "traefik.http.middlewares.static-files-compress.compress=true"
+            - "traefik.http.middlewares.static-files-stripprefix.stripprefix.prefixes=/static"
+            - "traefik.http.routers.static-files.middlewares=static-files-compress,static-files-stripprefix"
     geoserver:
         image: mxabierto/boundless-suite:efeabbd1a9afe9080acb5176c66ac4ec06408bb0
         container_name: container-geoserver
