@@ -63,6 +63,8 @@ services:
             context: ${PREFIX}/app
             dockerfile: Dockerfile
         container_name: container-django
+        environment:
+            - "PYTHONUNBUFFERED=1"
         volumes:
             - ${PREFIX}/app:/app
             - ${PREFIX}/flights:/flights
@@ -76,7 +78,7 @@ services:
         image: opendronemap/nodeodm
         container_name: container-nodeodm
         volumes:
-            - ${PREFIX}/flights:/var/www/data
+            - nodeodm_data:/var/www/data
         command: --log_level=silly --cleanup_tasks_after=525960000000 --parallel_queue_processing=10
         labels:
             - "traefik.enable=false"
@@ -108,8 +110,6 @@ services:
           - '--web.console.templates=/usr/share/prometheus/consoles'
           - '--web.route-prefix=/'
           - '--web.external-url=http://flysensorec.com/prometheus'
-        ports:
-          - "9090:9090"
         links:
           - cadvisor:cadvisor
         depends_on:
@@ -162,6 +162,7 @@ services:
             - "traefik.http.middlewares.grafana-remove-prefix.stripprefix.prefixes=/grafana"
             - "traefik.http.routers.grafana.middlewares=grafana-remove-prefix@docker"
 volumes:
+    nodeodm_data:
     geoserver_data:
     prometheus_data:
     grafana_data:
