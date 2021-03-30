@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": 179,
   "graphTooltip": 1,
-  "iteration": 1616285929360,
+  "iteration": 1616607987723,
   "links": [],
   "panels": [
     {
@@ -286,6 +286,217 @@
         "x": 0,
         "y": 7
       },
+      "id": 34,
+      "panels": [],
+      "title": "AgroSmart",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 0,
+        "y": 8
+      },
+      "hiddenSeries": false,
+      "id": 35,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.4.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "agrosmart_users",
+          "interval": "",
+          "legendFormat": "{{ state }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Users by type",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 9,
+        "y": 8
+      },
+      "hiddenSeries": false,
+      "id": 37,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.4.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "agrosmart_flights",
+          "interval": "",
+          "legendFormat": "{{ state }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Flights by type",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:963",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:964",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
       "id": 17,
       "panels": [],
       "title": "Host Info",
@@ -322,7 +533,7 @@
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 8
+        "y": 17
       },
       "id": 6,
       "interval": null,
@@ -414,7 +625,7 @@
         "h": 6,
         "w": 6,
         "x": 6,
-        "y": 8
+        "y": 17
       },
       "id": 4,
       "interval": null,
@@ -506,7 +717,7 @@
         "h": 6,
         "w": 7,
         "x": 12,
-        "y": 8
+        "y": 17
       },
       "id": 7,
       "interval": null,
@@ -592,7 +803,7 @@
         "h": 9,
         "w": 6,
         "x": 0,
-        "y": 14
+        "y": 23
       },
       "hiddenSeries": false,
       "id": 25,
@@ -701,7 +912,7 @@
         "h": 9,
         "w": 6,
         "x": 6,
-        "y": 14
+        "y": 23
       },
       "hiddenSeries": false,
       "id": 27,
@@ -815,7 +1026,7 @@
         "h": 9,
         "w": 7,
         "x": 12,
-        "y": 14
+        "y": 23
       },
       "hiddenSeries": false,
       "id": 28,
@@ -905,7 +1116,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 32
       },
       "id": 19,
       "panels": [],
@@ -935,7 +1146,7 @@
         "h": 10,
         "w": 6,
         "x": 0,
-        "y": 24
+        "y": 33
       },
       "hiddenSeries": false,
       "id": 3,
@@ -1045,7 +1256,7 @@
         "h": 10,
         "w": 6,
         "x": 6,
-        "y": 24
+        "y": 33
       },
       "hiddenSeries": false,
       "id": 2,
@@ -1147,7 +1358,7 @@
         "h": 10,
         "w": 7,
         "x": 12,
-        "y": 24
+        "y": 33
       },
       "id": 30,
       "links": [],
@@ -1237,7 +1448,7 @@
         "h": 14,
         "w": 9,
         "x": 0,
-        "y": 34
+        "y": 43
       },
       "hiddenSeries": false,
       "id": 8,
@@ -1346,7 +1557,7 @@
         "h": 14,
         "w": 10,
         "x": 9,
-        "y": 34
+        "y": 43
       },
       "hiddenSeries": false,
       "id": 9,
@@ -1550,5 +1761,5 @@
   "timezone": "browser",
   "title": "Docker and Host Monitoring w/ Prometheus",
   "uid": "64nrElFmk",
-  "version": 1
+  "version": 2
 }
