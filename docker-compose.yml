@@ -92,6 +92,7 @@ services:
             - "PYTHONUNBUFFERED=1"
         volumes:
             - ${PREFIX}/app:/app
+            - ${PREFIX}/.git:/gitinfo/.git
             - ${PREFIX}/flights:/flights
             - ${PREFIX}/projects:/projects
         labels:
