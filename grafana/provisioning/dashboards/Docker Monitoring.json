@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": 179,
   "graphTooltip": 1,
-  "iteration": 1616607987723,
+  "iteration": 1617152362299,
   "links": [],
   "panels": [
     {
@@ -489,13 +489,189 @@
       }
     },
     {
+      "cards": {
+        "cardPadding": null,
+        "cardRound": null
+      },
+      "color": {
+        "cardColor": "#b4ff00",
+        "colorScale": "sqrt",
+        "colorScheme": "interpolateRdYlGn",
+        "exponent": 0.5,
+        "mode": "spectrum"
+      },
+      "dataFormat": "tsbuckets",
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {},
+          "custom": {},
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 0,
+        "y": 16
+      },
+      "heatmap": {},
+      "hideZeroBuckets": false,
+      "highlightCards": true,
+      "id": 39,
+      "interval": null,
+      "legend": {
+        "show": false
+      },
+      "maxDataPoints": 50,
+      "pluginVersion": "7.4.5",
+      "reverseYBuckets": false,
+      "targets": [
+        {
+          "expr": "agrosmart_pics_per_flight_bucket",
+          "format": "heatmap",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{ le }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Number of images per flight",
+      "tooltip": {
+        "show": true,
+        "showHistogram": false
+      },
+      "type": "heatmap",
+      "xAxis": {
+        "show": true
+      },
+      "xBucketNumber": null,
+      "xBucketSize": null,
+      "yAxis": {
+        "decimals": null,
+        "format": "short",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true,
+        "splitFactor": null
+      },
+      "yBucketBound": "auto",
+      "yBucketNumber": null,
+      "yBucketSize": null
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "instance"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 162
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "branch"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 9,
+        "y": 16
+      },
+      "id": 41,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.4.5",
+      "targets": [
+        {
+          "expr": "sum by (branch, revision, version, instance) (agrosmart_build_info)",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Code build information",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 5,
+              "branch": 2,
+              "instance": 1,
+              "revision": 3,
+              "version": 4
+            },
+            "renameByName": {
+              "branch": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
       "collapsed": false,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 24
       },
       "id": 17,
       "panels": [],
@@ -533,7 +709,7 @@
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 17
+        "y": 25
       },
       "id": 6,
       "interval": null,
@@ -625,7 +801,7 @@
         "h": 6,
         "w": 6,
         "x": 6,
-        "y": 17
+        "y": 25
       },
       "id": 4,
       "interval": null,
@@ -717,7 +893,7 @@
         "h": 6,
         "w": 7,
         "x": 12,
-        "y": 17
+        "y": 25
       },
       "id": 7,
       "interval": null,
@@ -803,7 +979,7 @@
         "h": 9,
         "w": 6,
         "x": 0,
-        "y": 23
+        "y": 31
       },
       "hiddenSeries": false,
       "id": 25,
@@ -912,7 +1088,7 @@
         "h": 9,
         "w": 6,
         "x": 6,
-        "y": 23
+        "y": 31
       },
       "hiddenSeries": false,
       "id": 27,
@@ -1026,7 +1202,7 @@
         "h": 9,
         "w": 7,
         "x": 12,
-        "y": 23
+        "y": 31
       },
       "hiddenSeries": false,
       "id": 28,
@@ -1116,7 +1292,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 40
       },
       "id": 19,
       "panels": [],
@@ -1146,7 +1322,7 @@
         "h": 10,
         "w": 6,
         "x": 0,
-        "y": 33
+        "y": 41
       },
       "hiddenSeries": false,
       "id": 3,
@@ -1256,7 +1432,7 @@
         "h": 10,
         "w": 6,
         "x": 6,
-        "y": 33
+        "y": 41
       },
       "hiddenSeries": false,
       "id": 2,
@@ -1358,7 +1534,7 @@
         "h": 10,
         "w": 7,
         "x": 12,
-        "y": 33
+        "y": 41
       },
       "id": 30,
       "links": [],
@@ -1448,7 +1624,7 @@
         "h": 14,
         "w": 9,
         "x": 0,
-        "y": 43
+        "y": 51
       },
       "hiddenSeries": false,
       "id": 8,
@@ -1557,7 +1733,7 @@
         "h": 14,
         "w": 10,
         "x": 9,
-        "y": 43
+        "y": 51
       },
       "hiddenSeries": false,
       "id": 9,
@@ -1730,7 +1906,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -1761,5 +1937,5 @@
   "timezone": "browser",
   "title": "Docker and Host Monitoring w/ Prometheus",
   "uid": "64nrElFmk",
-  "version": 2
+  "version": 4
 }
