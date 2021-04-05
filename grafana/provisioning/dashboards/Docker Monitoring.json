@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": 179,
   "graphTooltip": 1,
-  "iteration": 1617500174960,
+  "iteration": 1617658294085,
   "links": [],
   "panels": [
     {
@@ -318,7 +318,7 @@
       },
       "lines": true,
       "linewidth": 1,
-      "nullPointMode": "null",
+      "nullPointMode": "null as zero",
       "options": {
         "alertThreshold": true
       },
@@ -359,6 +359,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:398",
           "format": "none",
           "label": null,
           "logBase": 1,
@@ -367,6 +368,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:399",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -415,7 +417,7 @@
       },
       "lines": true,
       "linewidth": 1,
-      "nullPointMode": "null",
+      "nullPointMode": "null as zero",
       "options": {
         "alertThreshold": true
       },
@@ -710,6 +712,83 @@
         }
       ],
       "title": "Used disk space per user",
+      "tooltip": {
+        "show": true,
+        "showHistogram": false
+      },
+      "type": "heatmap",
+      "xAxis": {
+        "show": true
+      },
+      "xBucketNumber": null,
+      "xBucketSize": null,
+      "yAxis": {
+        "decimals": null,
+        "format": "short",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true,
+        "splitFactor": null
+      },
+      "yBucketBound": "auto",
+      "yBucketNumber": null,
+      "yBucketSize": null
+    },
+    {
+      "cards": {
+        "cardPadding": 1,
+        "cardRound": 2
+      },
+      "color": {
+        "cardColor": "#b4ff00",
+        "colorScale": "sqrt",
+        "colorScheme": "interpolateRdYlGn",
+        "exponent": 0.5,
+        "min": 0,
+        "mode": "spectrum"
+      },
+      "dataFormat": "tsbuckets",
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {},
+          "custom": {},
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 9,
+        "y": 24
+      },
+      "heatmap": {},
+      "hideZeroBuckets": false,
+      "highlightCards": true,
+      "id": 43,
+      "interval": null,
+      "legend": {
+        "show": true
+      },
+      "maxDataPoints": 50,
+      "pluginVersion": "7.4.5",
+      "reverseYBuckets": false,
+      "targets": [
+        {
+          "expr": "agrosmart_used_pics_per_user_bucket",
+          "format": "heatmap",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{ le }}",
+          "refId": "A"
+        }
+      ],
+      "title": "Remaining images per user (current month)",
       "tooltip": {
         "show": true,
         "showHistogram": false
@@ -2012,5 +2091,5 @@
   "timezone": "browser",
   "title": "Docker and Host Monitoring w/ Prometheus",
   "uid": "64nrElFmk",
-  "version": 5
+  "version": 6
 }
