@@ -45,8 +45,8 @@ services:
         image: mxabierto/boundless-suite:efeabbd1a9afe9080acb5176c66ac4ec06408bb0
         container_name: container-geoserver
         volumes: 
-            - ${PREFIX}/flights:/media/input
-            - ${PREFIX}/projects:/media/USB
+            - ./flights:/media/input
+            - ./projects:/media/USB
             - geoserver_data:/opt/geoserver/data_dir
         environment:
             - GEOSERVER_DATA_DIR=/opt/geoserver/data_dir
@@ -57,14 +57,13 @@ services:
             - "traefik.http.routers.geoserver.entrypoints=web"
             - "traefik.http.middlewares.geoserver-remove-prefix.stripprefix.prefixes=/geoserver"
             - "traefik.http.routers.geoserver.middlewares=geoserver-remove-prefix@docker"
-    
     vue:
         build: 
-            context: ${PREFIX}/app/frontend
+            context: ./app/frontend
             dockerfile: Dockerfile
         container_name: container-vue
         volumes:
-            - ${PREFIX}/app/frontend:/app
+            - ./app/frontend:/app
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.vue.rule=PathPrefix(`/`)"
@@ -72,16 +71,15 @@ services:
             - "traefik.http.services.vue-app.loadbalancer.server.port=8001"
     django:
         build:
-            context: ${PREFIX}/app
+            context: ./app
             dockerfile: Dockerfile
         container_name: container-django
-        environment:
-            - "PYTHONUNBUFFERED=1"
+        environment: ["PYTHONUNBUFFERED=1", DEBUG, TEMPLATE_DEBUG, SECRET_KEY, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, FCM_API_KEY, APNS_CERTIFICATE, NODEODM_SERVER_URL, NODEODM_SERVER_TOKEN]
         volumes:
-            - ${PREFIX}/app:/app
-            - ${PREFIX}/.git:/gitinfo/.git
-            - ${PREFIX}/flights:/flights
-            - ${PREFIX}/projects:/projects
+            - ./app:/app
+            - ./.git:/gitinfo/.git
+            - ./flights:/flights
+            - ./projects:/projects
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.django.rule=PathPrefix(`/api`) || PathPrefix(`/nodeodm`) || PathPrefix(`/admin`) || PathPrefix(`/mapper`) || PathPrefix(`/lib`) || PathPrefix(`/src`)"
@@ -101,11 +99,11 @@ services:
             - "traefik.http.routers.nodeodm.middlewares=nodeodm-remove-prefix@docker"        
     webhook_adapter:
         build:
-            context: ${PREFIX}/webhook_adapter
+            context: ./webhook_adapter
             dockerfile: Dockerfile
         container_name: container-webhook-adapter
         volumes:
-            - ${PREFIX}/webhook_adapter/pending:/app/pending
+            - ./webhook_adapter/pending:/app/pending
         environment:
             - "REMOTE_URL=http://container-django:8000/nodeodm/task/%s/info"
             - "WEBHOOK_URL=http://container-django:8000/api/webhook-processing-complete"
