@@ -1,3 +1,5 @@
 letsencrypt/
 flights/
 projects/
+
+.env
