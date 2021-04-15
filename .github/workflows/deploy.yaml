@@ -1,0 +1,51 @@
+name: Deploy on production server
+on: 
+  release:
+    types: [released]
+jobs:
+  deploy:
+    name: "Deploy to production"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/deploy.key
+          chmod 600 ~/.ssh/deploy.key
+          cat >>~/.ssh/config <<EOF
+          Host deploy_server
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/deploy.key
+            StrictHostKeyChecking no
+          EOF
+        env:
+          SSH_USER: ${{ secrets.STAGING_SSH_USER }}
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+
+      - name: Run the update commands via ssh
+        run: |
+          ssh deploy_server <<EOF
+          tmux kill-session -t server # Kill the tmux session by name
+          
+          cd ~/AgroSmart/
+          git pull --recurse-submodules
+          
+          cd app/frontend
+          npm install
+          cd ~/AgroSmart/
+          
+          docker-compose stop
+          docker-compose build
+          docker-compose up -d
+          docker exec container-django python3 manage.py migrate
+          
+          tmux new -s server -d # Create detached tmux session called server
+          tmux send-keys -t server 'docker-compose up' C-m # Type "docker-compose up", then press Enter (C-m)
+          tmux split-window -v -t server # Vertically split the window
+          tmux send-keys -t server 'htop' C-m # Type "htop" on the bottom pane, then press Enter (C-m)
+          tmux last-pane -t server # Select the top pane (Docker) again
+          
+          exit
+          EOF
