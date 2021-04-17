@@ -63,7 +63,7 @@ services:
             - geoserver_data:/opt/geoserver/data_dir
         environment:
             - GEOSERVER_DATA_DIR=/opt/geoserver/data_dir
-            - JAVA_OPTS=-Xms320m -Xmx750m -XX:SoftRefLRUPolicyMSPerMB=36000 -XX:-UsePerfData -Dorg.geotools.referencing.forceXY=true -Dorg.geotoools.render.lite.scale.unitCompensation=true -Xbootclasspath/a:/usr/local/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -Djava.library.path=/usr/lib:/usr/lib/jni:/opt/libjpeg-turbo/lib64:/usr/lib64 -Xbootclasspath/a:/opt/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -server -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true
+            - JAVA_OPTS=-Xms320m -Xmx750m -XX:SoftRefLRUPolicyMSPerMB=36000 -XX:-UsePerfData -Dorg.geotools.referencing.forceXY=true -Dorg.geotoools.render.lite.scale.unitCompensation=true -Xbootclasspath/a:/usr/local/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -Djava.library.path=/usr/lib:/usr/lib/jni:/opt/libjpeg-turbo/lib64:/usr/lib64 -Xbootclasspath/a:/opt/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -server -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true -DGEOSERVER_DATA_DIR=/opt/geoserver/data_dir
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.geoserver.rule=Host(`flysensorec.com`) && PathPrefix(`/geoserver`)"
@@ -87,7 +87,7 @@ services:
             context: ./app
             dockerfile: Dockerfile
         container_name: container-django
-        environment: ["PYTHONUNBUFFERED=1", DEBUG, TEMPLATE_DEBUG, SECRET_KEY, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, FCM_API_KEY, APNS_CERTIFICATE, NODEODM_SERVER_URL, NODEODM_SERVER_TOKEN]
+        environment: ["PYTHONUNBUFFERED=1", DEBUG, TEMPLATE_DEBUG, SECRET_KEY, GEOSERVER_PASSWORD, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, FCM_API_KEY, APNS_CERTIFICATE, NODEODM_SERVER_URL, NODEODM_SERVER_TOKEN]
         volumes:
             - ./app:/app
             - ./.git:/gitinfo/.git
