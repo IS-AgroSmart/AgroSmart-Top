@@ -25,7 +25,7 @@ scrape_configs:
   - job_name: 'traefik'
     scheme: https
     static_configs:
-        - targets: ['container-traefik']      
+        - targets: ['flysensorec.com']      
         
   - job_name: 'django'
     scrape_interval: 1m
