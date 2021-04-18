@@ -24,7 +24,7 @@ scrape_configs:
         
   - job_name: 'traefik'
     static_configs:
-        - targets: ['container-traefik:80']      
+        - targets: ['https://container-traefik:443']      
         
   - job_name: 'django'
     scrape_interval: 1m
