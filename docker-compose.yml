@@ -82,6 +82,8 @@ services:
             - "traefik.http.routers.vue.rule=Host(`flysensorec.com`) && PathPrefix(`/`)"
             - "traefik.http.routers.vue.entrypoints=websecure"
             - "traefik.http.services.vue-app.loadbalancer.server.port=8001"
+            - "traefik.http.middlewares.vue-compress.compress=true"
+            - "traefik.http.routers.vue.middlewares=vue-compress"
     django:
         build:
             context: ./app
