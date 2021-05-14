@@ -69,6 +69,8 @@ services:
             - "traefik.http.routers.vue.rule=PathPrefix(`/`)"
             - "traefik.http.routers.vue.entrypoints=web"
             - "traefik.http.services.vue-app.loadbalancer.server.port=8001"
+            - "traefik.http.middlewares.vue-compress.compress=true"
+            - "traefik.http.routers.vue.middlewares=vue-compress"
     django:
         build:
             context: ./app
