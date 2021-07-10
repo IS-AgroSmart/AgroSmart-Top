@@ -1,7 +1,7 @@
 version: '3'
 services:
     traefik:
-        image: "traefik:v2.4"
+        image: "traefik:v2.5.0-rc2"
         container_name: "container-traefik"
         command:
             # - "--log.level=DEBUG"
@@ -66,7 +66,7 @@ services:
             - JAVA_OPTS=-Xms320m -Xmx750m -XX:SoftRefLRUPolicyMSPerMB=36000 -XX:-UsePerfData -Dorg.geotools.referencing.forceXY=true -Dorg.geotoools.render.lite.scale.unitCompensation=true -Xbootclasspath/a:/usr/local/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -Djava.library.path=/usr/lib:/usr/lib/jni:/opt/libjpeg-turbo/lib64:/usr/lib64 -Xbootclasspath/a:/opt/tomcat/lib/marlin-0.7.3-Unsafe.jar -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine -Dsun.java2d.renderer.useThreadLocal=false -server -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true -DGEOSERVER_DATA_DIR=/opt/geoserver/data_dir
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.geoserver.rule=Host(`flysensorec.com`) && PathPrefix(`/geoserver`)"
+            - "traefik.http.routers.geoserver.rule=Host(`flysensorec.com`) && PathPrefix(`/geoserver`) && !PathPrefix(`/geoserver/geoserver/web/wicket/bookmarkable/org.geoserver.web.demo.MapPreviewPage`)"
             - "traefik.http.routers.geoserver.entrypoints=websecure"
             - "traefik.http.middlewares.geoserver-remove-prefix.stripprefix.prefixes=/geoserver"
             - "traefik.http.routers.geoserver.middlewares=geoserver-remove-prefix@docker"
